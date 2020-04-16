@@ -1,0 +1,59 @@
+#! /bin/bash
+
+function create_file(){
+	read -p 'Enter the full name of the file: ' nameoffile
+	[ -e $nameoffile ] && echo "$nameoffile exists" || touch $nameoffile
+}
+
+function delete_file(){
+	read -p 'Enter the name of the file: ' nameoffile
+	[ -e $nameoffile ] && rm $nameoffile || echo "$nameoffile does not exist"
+}
+
+function change_directory(){
+	read -p "Enter the full name of the directory: " nameofdirectory
+	[ -d $nameofdirectory ] && cd $nameofdirectory || echo "No such directory found"
+	echo "current directory is: $PWD"
+}
+
+function create_directory(){
+	read -p "Enter the name of the directory: " nameofdirectory
+	[ -d $nameofdirectory ] && echo "directory already exists" || mkdir $nameofdirectory
+}
+
+function delete_directory(){
+	read -p "Enter the name of the directory: " nameofdirectory
+	[ -d $nameofdirectory ] && rm -r $nameofdirectory || echo "No such directory found"
+}
+
+function move(){
+	read -p "Enter the full name of file or directory to move: " name
+	read -p "Enter the full name of file or directory to move to: " moveto
+	[ "-d $moveto" -o "-e $name" ] && mv $name $moveto || echo "File or directory not found"
+}
+
+function copy(){
+	read -p "Enter the full name of the file or directory to copy: " name
+	read -p "Enter the full name of the file or directory to copy to: " copyto
+	[ "-d $name" -o "-e $name" ] && cp $name $copyto || echo "File or directory not found"
+}
+
+
+while true
+do
+	echo '********** Main Menu ***********'
+	select choice in 'Create file' 'Delete file' 'Change directory' 'List directory' 'Create directory' 'Delete directory' 'Move' 'Copy' 'exit'
+	do
+		case $REPLY in 
+			1) create_file ; break ;;
+			2) delete_file ; break ;; 
+			3) change_directory ; break ;;
+			4) ls; break ;;
+			5) create_directory; break; ;;
+			6) delete_directory; break ;;
+			7) move; break ;;
+			8) copy; break ;;
+			*) exit ;;
+		esac
+	done
+done
